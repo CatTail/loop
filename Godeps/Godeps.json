@@ -1,0 +1,10 @@
+{
+	"ImportPath": "github.com/cattail/loop",
+	"GoVersion": "go1.3.3",
+	"Deps": [
+		{
+			"ImportPath": "github.com/stretchr/testify/assert",
+			"Rev": "d6577e08ec30538639ac0ea38b562b6f250e9055"
+		}
+	]
+}
