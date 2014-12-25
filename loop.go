@@ -1,8 +1,8 @@
 package loop
 
 import (
-	"log"
 	"reflect"
+	"sync"
 	"time"
 )
 
@@ -19,12 +19,11 @@ type Loop struct {
 	wq       []*Work // work queue
 	dq       []*Work // done queue
 	stopFlag bool
+	mutex    sync.Mutex
 }
 
 // Create default loop struct
 func DefaultLoop() (loop *Loop) {
-	log.SetFlags(log.Llongfile)
-
 	loop = new(Loop)
 	initialize(loop)
 	return
@@ -32,24 +31,17 @@ func DefaultLoop() (loop *Loop) {
 
 // Start event loop
 func Run(loop *Loop) {
-	for !loop.stopFlag {
+	for !loop.stopFlag && len(loop.dq) != 0 || len(loop.wq) != 0 {
 		var work *Work
 
-		// WHY????
 		for len(loop.dq) == 0 {
 			time.Sleep(100 * time.Millisecond)
 		}
 
 		// pop up last element
 		work, loop.dq = loop.dq[len(loop.dq)-1], loop.dq[:len(loop.dq)-1]
-		log.Printf("Available %d, Remaining %d, Current %d",
-			len(loop.dq), len(loop.wq), work.id)
 		// execute the associated callback
 		work.done.Call(work.results)
-
-		if len(loop.dq) == 0 && len(loop.wq) == 0 {
-			loop.stopFlag = true
-		}
 	}
 }
 
