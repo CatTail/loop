@@ -40,8 +40,8 @@ asynchrounous operation slower than synchrounous one.
 
 In Node.js, the benchmark result is
 
-    readFile x 679 ops/sec ±0.97% (84 runs sampled)
-    readFileSync x 46,463 ops/sec ±0.96% (82 runs sampled)
+    Sync time 2.197293996810913
+    Async time 3.449674129486084
 
 The synchrounous operation is also faster than asynchrounous one.
 

@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "description": "Event loop for golang. Just for fun!",
   "main": "benchmark.js",
-  "dependencies": {
-    "benchmark": "^1.0.0"
-  },
   "devDependencies": {
-    "benchmark": "^1.0.0"
+    "async": "^0.9.0",
+    "microtime": "^1.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

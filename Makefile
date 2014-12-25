@@ -3,6 +3,7 @@ test:
 
 bench:
 	go test -bench=.
+	node ./benchmark.js
 
 clean:
 	rm -rf build/*

@@ -1,24 +1,24 @@
 var fs = require('fs');
-var Suite = require('benchmark').Suite;
-var suite = new Suite;
+var microtime = require('microtime');
+var async = require('async');
 var fixture = './fixtures/file.txt';
+var times = 100000;
 
-suite.add('readFileSync', function() {
+var syncStart, syncEnd, asyncStart, asyncEnd;
+
+syncStart = microtime.nowDouble();
+for (var i=0; i<times; i++) {
     fs.readFileSync(fixture);
-})
-.add('readFile', {
-    defer: true,
-    fn: function(deferred) {
-        fs.readFile(fixture, function() {
-            deferred.resolve();
-        });
-    }
-})
-.on('cycle', function(event) {
-  console.log(String(event.target));
-})
-.on('complete', function() {
-  console.log('Fastest is ' + this.filter('fastest').pluck('name'));
-})
-.run({ 'async': true });
-;
+}
+syncEnd = microtime.nowDouble();
+console.log('Sync time', syncEnd - syncStart);
+
+asyncStart = microtime.nowDouble();
+async.times(times, function(n, next) {
+    fs.readFile(fixture, function() {
+        next();
+    });
+}, function() {
+    asyncEnd = microtime.nowDouble();
+    console.log('Async time', asyncEnd - asyncStart);
+});
