@@ -26,24 +26,29 @@
 
 Run
     
-    make bench
+    go test -bench=.
 
-The reslut is
+To execute golang benchmark
 
-    BenchmarkFSReadFile       100000	    21967 ns/op
-    BenchmarkFSReadFileSync	  200000	    8207 ns/op
-    BenchmarkHTTPGet	      2000	        13951960 ns/op
-    BenchmarkHTTPGetSync	  10	        102690509 ns/op
+    BenchmarkFSReadFile	        300	   4266092 ns/op
+    BenchmarkFSReadFileSync	    500	   3364286 ns/op
+    BenchmarkHTTPGet	        2000   15359451 ns/op
+    BenchmarkHTTPGetSync	    10	   103618460 ns/op
 
 It seems that file read operation is so fast that extra event loop made 
 asynchrounous operation slower than synchrounous one.
 
-In Node.js, the benchmark result is
+Run
 
-    Sync time 2.197293996810913
-    Async time 3.449674129486084
+    node ./benchmark.js
 
-The synchrounous operation is also faster than asynchrounous one.
+To execute Node.js benchmark
+
+    Benchmark readFileSync  300     57137028.3762614ns/op
+    Benchmark readFile      300     21750434.239705402ns/op
+
+In Node.js, the benchmark result is different, asynchrounous operation is
+faster than the synchrounous one.
 
 ## License
 
