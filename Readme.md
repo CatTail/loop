@@ -38,6 +38,13 @@ The reslut is
 It seems that file read operation is so fast that extra event loop made 
 asynchrounous operation slower than synchrounous one.
 
+In Node.js, the benchmark result is
+
+    readFile x 679 ops/sec ±0.97% (84 runs sampled)
+    readFileSync x 46,463 ops/sec ±0.96% (82 runs sampled)
+
+The synchrounous operation is also faster than asynchrounous one.
+
 ## License
 
 MIT
