@@ -1,9 +1,5 @@
 package loop
 
-import (
-	"log"
-)
-
 // Submit job to another corroutine
 func submit(loop *Loop, work *Work) {
 	work.id = uuid()
@@ -11,12 +7,12 @@ func submit(loop *Loop, work *Work) {
 	loop.wq = append(loop.wq, work)
 
 	go func() {
-		log.Println(work.work)
 		work.results = work.work.Call(work.args)
 		// pop up work into done queue
+		//loop.mutex.Lock()
 		work.loop.wq = remove(work.loop.wq, work)
 		work.loop.dq = append(work.loop.dq, work)
-		log.Printf("Work %s finished", work.id)
+		//loop.mutex.Unlock()
 	}()
 
 }

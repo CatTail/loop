@@ -1,7 +1,6 @@
 package loop
 
 import (
-	"log"
 	"os"
 	"reflect"
 )
@@ -14,30 +13,32 @@ func FSReadFile(loop *Loop, filename string, options map[string]string, callback
 	}
 	done := reflect.ValueOf(callback)
 
-	work := reflect.ValueOf(func(filename string, options map[string]string) (error, []byte) {
-		file, err := os.Open(filename)
-		if err != nil {
-			return err, nil
-		}
+	work := reflect.ValueOf(FSReadFileSync)
 
-		fileinfo, err := file.Stat()
-		if err != nil {
-			return err, nil
-		}
-
-		data := make([]byte, fileinfo.Size())
-		_, err = file.Read(data)
-		if err != nil {
-			return err, nil
-		}
-
-		return nil, data
-	})
-
-	log.Println("Submit work")
 	submit(loop, &Work{
 		work: work,
 		args: args,
 		done: done,
 	})
+}
+
+func FSReadFileSync(filename string, options map[string]string) (err error, data []byte) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return err, nil
+	}
+	defer file.Close()
+
+	fileinfo, err := file.Stat()
+	if err != nil {
+		return err, nil
+	}
+
+	data = make([]byte, fileinfo.Size())
+	_, err = file.Read(data)
+	if err != nil {
+		return err, nil
+	}
+
+	return nil, data
 }

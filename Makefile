@@ -1,6 +1,9 @@
 test:
 	go test -v ./...
 
+bench:
+	go test -bench=.
+
 clean:
 	rm -rf build/*
 
@@ -12,4 +15,4 @@ get:
 	go get github.com/tools/godep
 	godep restore ./...
 
-.PHONY: test clean build get
+.PHONY: test bench clean build get
