@@ -9,10 +9,10 @@ func submit(loop *Loop, work *Work) {
 	go func() {
 		work.results = work.work.Call(work.args)
 		// pop up work into done queue
-		//loop.mutex.Lock()
+		loop.mutex.Lock()
 		work.loop.wq = remove(work.loop.wq, work)
 		work.loop.dq = append(work.loop.dq, work)
-		//loop.mutex.Unlock()
+		loop.mutex.Unlock()
 	}()
 
 }
