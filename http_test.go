@@ -10,11 +10,9 @@ import (
 )
 
 var content = "Hello, World"
+var ts = createServer()
 
 func TestHTTPGet(t *testing.T) {
-	ts := createServer()
-	defer ts.Close()
-
 	loop := DefaultLoop()
 
 	options := map[string]string{"url": ts.URL}
@@ -28,9 +26,6 @@ func TestHTTPGet(t *testing.T) {
 }
 
 func BenchmarkHTTPGet(b *testing.B) {
-	ts := createServer()
-	defer ts.Close()
-
 	loop := DefaultLoop()
 
 	options := map[string]string{"url": ts.URL}
@@ -43,9 +38,6 @@ func BenchmarkHTTPGet(b *testing.B) {
 }
 
 func BenchmarkHTTPGetSync(b *testing.B) {
-	ts := createServer()
-	defer ts.Close()
-
 	options := map[string]string{"url": ts.URL}
 	for i := 0; i < b.N; i++ {
 		HTTPGetSync(options)
@@ -55,7 +47,7 @@ func BenchmarkHTTPGetSync(b *testing.B) {
 func createServer() (server *httptest.Server) {
 	// start test server
 	server = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		time.Sleep(1000)
+		time.Sleep(100 * time.Millisecond)
 		fmt.Fprint(w, content)
 	}))
 	return
