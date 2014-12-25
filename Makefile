@@ -1,10 +1,6 @@
 test:
 	go test -v ./...
 
-bench:
-	go test -bench=.
-	node ./benchmark.js
-
 clean:
 	rm -rf build/*
 
@@ -16,4 +12,4 @@ get:
 	go get github.com/tools/godep
 	godep restore ./...
 
-.PHONY: test bench clean build get
+.PHONY: test clean build get

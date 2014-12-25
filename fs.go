@@ -1,7 +1,7 @@
 package loop
 
 import (
-	"os"
+	"io/ioutil"
 	"reflect"
 )
 
@@ -23,19 +23,7 @@ func FSReadFile(loop *Loop, filename string, options map[string]string, callback
 }
 
 func FSReadFileSync(filename string, options map[string]string) (err error, data []byte) {
-	file, err := os.Open(filename)
-	if err != nil {
-		return err, nil
-	}
-	defer file.Close()
-
-	fileinfo, err := file.Stat()
-	if err != nil {
-		return err, nil
-	}
-
-	data = make([]byte, fileinfo.Size())
-	_, err = file.Read(data)
+	data, err = ioutil.ReadFile(filename)
 	if err != nil {
 		return err, nil
 	}
